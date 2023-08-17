@@ -6,6 +6,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Product } from '../models/product/product.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { AllProductsDto } from '../models/product/all-products.dto';
+import { FilterProductsDto } from 'src/models/product/filter-products.dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -65,5 +66,15 @@ export class ProductController {
   @ApiResponse({ status: 200, description: 'Product deleted successfully' })
   remove(@Param('id') id: number) {
     return this.productService.remove(id);
+  }
+
+  @Get('filtered')
+  @ApiResponse({
+    status: 200,
+    description: 'List of filtered products',
+    type: [Product],
+  })
+  findFilteredProducts(@Query() filterDto: FilterProductsDto) {
+    return this.productService.findFilteredProducts(filterDto);
   }
 }
